@@ -25,7 +25,7 @@ public class SubSystem {
     private String description;
     @NotBlank(message = "شناسه سیستم نمی تواند خالی باشد")
     private String prefix;
-    private int ticketCounter;
+    private int ticketCounter = 0;
     private Boolean isActive= true;
     @CreationTimestamp
     private LocalDateTime created ;

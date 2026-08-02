@@ -11,4 +11,10 @@ public interface SupportAccessRepository extends JpaRepository<SupportAccess,Lon
     List<SupportAccess> findByUser(User user);
     List<SupportAccess> findBySubSystem(SubSystem subSystem);
     boolean existsByUserAndSubSystem(User user, SubSystem subSystem);
+
+    List<SupportAccess> getSupportAccessByUser_IdAndSubSystem_Id(Long userId, Long subSystemId);
+
+    List<SupportAccess> getSupportAccessByUser_Id(Long userId);
+
+    List<SupportAccess> getSupportAccessBySubSystem_Id(Long subSystemId);
 }
