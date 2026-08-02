@@ -1,0 +1,18 @@
+package com.peyman.ticketing.repository;
+
+import com.peyman.ticketing.model.SubSystem;
+import com.peyman.ticketing.model.Ticket;
+import com.peyman.ticketing.model.User;
+import com.peyman.ticketing.model.enums.TicketStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
+    List<Ticket> findBySubSystem(SubSystem subSystem);
+    List<Ticket> findByAssignedTo(User assignedTo);
+    List<Ticket> findByStatus(TicketStatus status);
+    List<Ticket> findBySubSystemAndStatus(SubSystem subSystem, TicketStatus status);
+    Optional<Ticket> findByTicketNumber(String ticketNumber);
+}

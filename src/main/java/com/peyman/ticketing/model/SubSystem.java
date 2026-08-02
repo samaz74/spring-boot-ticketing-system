@@ -1,6 +1,5 @@
-package model;
+package com.peyman.ticketing.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

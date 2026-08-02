@@ -1,4 +1,4 @@
-package model;
+package com.peyman.ticketing.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import model.enums.Priority;
-import model.enums.TicketStatus;
+import com.peyman.ticketing.model.enums.Priority;
+import com.peyman.ticketing.model.enums.TicketStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;

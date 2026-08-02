@@ -1,4 +1,4 @@
-package model;
+package com.peyman.ticketing.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

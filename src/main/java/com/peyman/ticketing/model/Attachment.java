@@ -1,11 +1,10 @@
-package model;
+package com.peyman.ticketing.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import model.enums.TicketStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String filename;
+    private String fileName;
     @Column(unique = true)
     private String storedFileName;
     private String filePath;
@@ -32,6 +31,14 @@ public class Attachment {
     @JoinColumn(name = "message_id")
     private Message message;
     @CreationTimestamp
-    private LocalDateTime upladedat;
+    private LocalDateTime uploadedAt;
+
+    public Attachment(String fileName,String storedFileName, String filePath,String fileType, Long fileSize){
+        this.fileName=fileName;
+        this.storedFileName=storedFileName;
+        this.filePath=filePath;
+        this.fileType = fileType;
+        this.fileSize = fileSize;
+    }
 
 }
