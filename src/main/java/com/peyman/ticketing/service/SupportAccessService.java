@@ -22,10 +22,12 @@ public class SupportAccessService {
     public SupportAccess grantAccess(Long userId, Long subSystemId) {
         User user= userService.getById(userId).get();
         SubSystem subSystem= subSystemService.getById(subSystemId).get();
-        SupportAccess supportAccess= new SupportAccess();
-        supportAccess.setUser(user);
-        supportAccess.setSubSystem(subSystem);
-        return supportAccessRepository.save(supportAccess);
+        if(!hasAccess(userId, subSystemId)){
+            SupportAccess supportAccess= new SupportAccess();
+            supportAccess.setUser(user);
+            supportAccess.setSubSystem(subSystem);
+            return supportAccessRepository.save(supportAccess);
+        }else throw new RuntimeException("دسترسی اعلامی تکراری است");
     }
     public void revokeAccess(Long userId, Long subSystemId) {
         if(hasAccess(userId, subSystemId)) {
