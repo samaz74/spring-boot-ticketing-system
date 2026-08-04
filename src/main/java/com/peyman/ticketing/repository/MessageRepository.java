@@ -9,4 +9,6 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message,Long> {
     List<Message> findByTicket(Ticket ticket);
     List<Message> findByTicketOrderByCreatedAtAsc(Ticket ticket);
+
+    List<Message> getMessageByTicket_Id(Long ticketId);
 }

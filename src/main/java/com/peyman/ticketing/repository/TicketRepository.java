@@ -31,13 +31,10 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     List<Ticket> getTicketByAssignedTo_IdOrAssignedToNullAndSubSystem(Long assignedToId, User assignedTo, SubSystem subSystem);
 
-    List<Ticket> getTicketByAssignedTo_IdOrAssignedToNullAndSubSystem(Long assignedToId, User assignedTo, SubSystem subSystem);
-
     Ticket[] getTicketByAssignedTo(User assignedTo);
 
-    Collection<? extends Ticket> findBySubSystemAndAssignedToIsNull(SubSystem subSystem, User assignedTo);
+    Collection<? extends Ticket> findBySubSystemAndAssignedToIsNull(SubSystem subSystem);
 
     Collection<? extends Ticket> findBySubSystemAndAssignedTo(SubSystem subSystem, User assignedTo);
 
-    Collection<? extends Ticket> findBySubSystemAndAssignedToIsNull(SubSystem subSystem, User assignedTo);
 }

@@ -1,5 +1,6 @@
 package com.peyman.ticketing.service;
 
+import com.peyman.ticketing.exeption.DuplicateResourceException;
 import com.peyman.ticketing.model.User;
 import com.peyman.ticketing.model.enums.Roles;
 import com.peyman.ticketing.repository.UserRepository;
@@ -16,9 +17,9 @@ public class UserService {
     }
     public User register(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("نام کاربری تکراری است");
+            throw new DuplicateResourceException("نام کاربری تکراری است");
         } else if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("پست الکترونیک تکراری است");
+                throw new DuplicateResourceException("پست الکترونیک تکراری است");
         } else return userRepository.save(user);
     }
     public Optional<User> getById(Long id){

@@ -10,4 +10,8 @@ import java.util.List;
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
     List<Attachment> findByTicket(Ticket ticket);
     List<Attachment> findByMessage(Message message);
+
+    List<Attachment> getAttachmentByTicket_Id(Long ticketId);
+
+    List<Attachment> getAttachmentByMessage_Id(Long messageId);
 }

@@ -1,5 +1,6 @@
 package com.peyman.ticketing.service;
 
+import com.peyman.ticketing.exeption.AccessDeniedException;
 import com.peyman.ticketing.model.SubSystem;
 import com.peyman.ticketing.model.SupportAccess;
 import com.peyman.ticketing.model.Ticket;
@@ -26,7 +27,7 @@ public class TicketService {
         this.subSystemService = subSystemService;
         this.supportAccessService = supportAccessService;
     }
-    public Ticket CreatTicket(Ticket ticket,Long userID, Long subSystemID){
+    public Ticket creatTicket(Ticket ticket,Long userID, Long subSystemID){
         SubSystem subSystem = subSystemService.getById(subSystemID).get();
         User user = userService.getById(userID).get();
         String ticketNumber = subSystemService.generateTicketNumber(subSystemID);
@@ -35,7 +36,7 @@ public class TicketService {
         ticket.setTicketNumber(ticketNumber);
         return ticketRepository.save(ticket);
     }
-    public Optional<Ticket> getByID(Long id){
+    public Optional<Ticket> getById(Long id){
         return ticketRepository.findById(id);
     }
     public List<Ticket> getBySUbSystem(Long id){
@@ -45,11 +46,15 @@ public class TicketService {
         return ticketRepository.getTicketByAssignedTo_Id(supporterID);
     }
     public void assignTicket (Long userId , Long ticketId){
-        Ticket ticket = getByID(ticketId).get();
-        ticket.setAssignedTo(userService.getById(userId).get());
+        Ticket ticket = getById(ticketId).get();
+        if(supportAccessService.hasAccess(userId,ticket.getSubSystem().getId())){
+            ticket.setAssignedTo(userService.getById(userId).get());
+            ticket.setStatus(TicketStatus.ASSIGNED);
+            ticketRepository.save(ticket);
+        }else throw new AccessDeniedException("کاربر به این سیستم دسترسی ندارد.");
     }
     public void changeStatus(Long ticketId, TicketStatus ticketStatus){
-        Ticket ticket = getByID(ticketId).get();
+        Ticket ticket = getById(ticketId).get();
         ticket.setStatus(ticketStatus);
         ticketRepository.save(ticket);
     }
@@ -64,7 +69,7 @@ public class TicketService {
         for (SubSystem subSystem : subSystems) {
             // تیکت‌های منتصب‌نشده
             visibleTickets.addAll(
-                    ticketRepository.findBySubSystemAndAssignedToIsNull(subSystem,null)
+                    ticketRepository.findBySubSystemAndAssignedToIsNull(subSystem)
             );
             // تیکت‌های منتصب به این پشتیبان
             visibleTickets.addAll(

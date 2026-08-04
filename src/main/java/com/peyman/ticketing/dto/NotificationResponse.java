@@ -1,0 +1,21 @@
+package com.peyman.ticketing.dto;
+
+import com.peyman.ticketing.model.enums.NotificationType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class NotificationResponse {
+    private Long id;
+    private String content;
+    private NotificationType type;
+    private Boolean isRead;
+    private LocalDateTime createdAt;
+}

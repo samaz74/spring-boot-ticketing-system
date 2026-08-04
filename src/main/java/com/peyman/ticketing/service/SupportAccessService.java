@@ -1,5 +1,8 @@
 package com.peyman.ticketing.service;
 
+import com.peyman.ticketing.exeption.DuplicateResourceException;
+import com.peyman.ticketing.exeption.InvalidOperationException;
+import com.peyman.ticketing.exeption.ResourceNotFoundException;
 import com.peyman.ticketing.model.SubSystem;
 import com.peyman.ticketing.model.SupportAccess;
 import com.peyman.ticketing.model.User;
@@ -27,14 +30,14 @@ public class SupportAccessService {
             supportAccess.setUser(user);
             supportAccess.setSubSystem(subSystem);
             return supportAccessRepository.save(supportAccess);
-        }else throw new RuntimeException("دسترسی اعلامی تکراری است");
+        }else throw new DuplicateResourceException("دسترسی اعلامی تکراری است");
     }
     public void revokeAccess(Long userId, Long subSystemId) {
         if(hasAccess(userId, subSystemId)) {
             User user = userService.getById(userId).get();
             SupportAccess supportAccess = supportAccessRepository.getSupportAccessByUser_IdAndSubSystem_Id(userId, subSystemId).getFirst();
             supportAccessRepository.delete(supportAccess);
-        } else throw new RuntimeException("دسترسی یافت نشد.");
+        } else throw new InvalidOperationException("دسترسی یافت نشد.");
     }
     public List<SupportAccess> getSupportAccessByUser_Id(Long userId) {
         return supportAccessRepository.getSupportAccessByUser_Id(userId);
