@@ -23,7 +23,7 @@ public class AttachmentService {
     }
     public void uploadAttachmentForTicket(Long ticketId, MultipartFile file) throws IOException {
         Attachment attachment = new Attachment();
-        attachment.setTicket(ticketService.getById(ticketId).get());
+        attachment.setTicket(ticketService.getEntityById(ticketId));
         attachment.setFileName(file.getOriginalFilename());
         attachment.setFileType(file.getContentType());
         attachment.setFileSize(file.getSize());
@@ -37,7 +37,7 @@ public class AttachmentService {
     }
     public void uploadAtachmentForMessage(Long messageId, MultipartFile file) throws IOException {
         Attachment attachment = new Attachment();
-        attachment.setMessage(messageService.getMessageById(messageId).get());
+        attachment.setMessage(messageService.getEntityMessageById(messageId));
         attachment.setFileName(file.getOriginalFilename());
         attachment.setFileType(file.getContentType());
         attachment.setFileSize(file.getSize());

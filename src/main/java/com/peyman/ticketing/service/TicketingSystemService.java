@@ -1,5 +1,9 @@
 package com.peyman.ticketing.service;
 
+import com.peyman.ticketing.dto.TicketingSystemRequest;
+import com.peyman.ticketing.dto.TicketingSystemResponse;
+import com.peyman.ticketing.dto.mapper.TicketingSystemMapper;
+import com.peyman.ticketing.exeption.ResourceNotFoundException;
 import com.peyman.ticketing.model.TicketingSystem;
 import com.peyman.ticketing.repository.TicketingSystemRepository;
 import org.springframework.stereotype.Service;
@@ -14,23 +18,28 @@ public class TicketingSystemService {
     private TicketingSystemService(TicketingSystemRepository ticketingSystemRepository) {
         this.ticketingSystemRepository = ticketingSystemRepository;
     }
-    public TicketingSystem create(TicketingSystem ticketingSystem) {
+    public TicketingSystemResponse create(TicketingSystemRequest request) {
         String apiKey = UUID.randomUUID().toString();
+        TicketingSystem ticketingSystem = TicketingSystemMapper.toEntity(request);
         ticketingSystem.setApiKey(apiKey);
-        return ticketingSystemRepository.save(ticketingSystem);
+        ticketingSystemRepository.save(ticketingSystem);
+        return TicketingSystemMapper.mapperResponse(ticketingSystem);
     }
-    public List<TicketingSystem> getAll() {
-        return ticketingSystemRepository.findAll();
+    public List<TicketingSystemResponse> getAll() {
+        return ticketingSystemRepository.findAll().stream().map(TicketingSystemMapper::mapperResponse).collect(Collectors.toList());
     }
-    public Optional<TicketingSystem> getById(Long id) {
-        return ticketingSystemRepository.findById(id);
+    public TicketingSystem getEntityById(Long id) {
+        return ticketingSystemRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("شخصی با این شناسه یافت نشد"));
+    }
+    public TicketingSystemResponse getById(Long id) {
+        return ticketingSystemRepository.findById(id).map(TicketingSystemMapper::mapperResponse).orElseThrow(() ->new ResourceNotFoundException("شخصی با این شناسه یافت نشد"));
     }
     public void toggleActive(long id ) {
-        TicketingSystem ticketingSystem =  getById(id).get();
+        TicketingSystem ticketingSystem =  getEntityById(id);
         ticketingSystem.setActive(!ticketingSystem.getActive());
         ticketingSystemRepository.save(ticketingSystem);
     }
-    public Optional<TicketingSystem> getByApiKey(String apiKey) {
-        return ticketingSystemRepository.findByApiKey(apiKey);
+    public TicketingSystemResponse getByApiKey(String apiKey) {
+        return ticketingSystemRepository.findByApiKey(apiKey).map(TicketingSystemMapper::mapperResponse).orElseThrow(() -> new ResourceNotFoundException("سیستم تیکتینگ یافت نشد."));
     }
 }

@@ -5,6 +5,7 @@ import com.peyman.ticketing.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByUserAndIsReadFalse(User user);
@@ -13,7 +14,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     List<Notification> getNotificationByIsRead(Boolean isRead);
 
-    Notification findNotificationById(Long id);
+    Optional <Notification> findNotificationById(Long id);
 
     int countNotificationByUser_Id(Long userId);
 

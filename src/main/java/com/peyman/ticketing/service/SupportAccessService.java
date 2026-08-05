@@ -23,8 +23,8 @@ public class SupportAccessService {
         this.subSystemService = subSystemService;
     }
     public SupportAccess grantAccess(Long userId, Long subSystemId) {
-        User user= userService.getById(userId).get();
-        SubSystem subSystem= subSystemService.getById(subSystemId).get();
+        User user= userService.getEntityById(userId);
+        SubSystem subSystem= subSystemService.getEntityById(subSystemId);
         if(!hasAccess(userId, subSystemId)){
             SupportAccess supportAccess= new SupportAccess();
             supportAccess.setUser(user);
@@ -34,7 +34,7 @@ public class SupportAccessService {
     }
     public void revokeAccess(Long userId, Long subSystemId) {
         if(hasAccess(userId, subSystemId)) {
-            User user = userService.getById(userId).get();
+            User user = userService.getEntityById(userId);
             SupportAccess supportAccess = supportAccessRepository.getSupportAccessByUser_IdAndSubSystem_Id(userId, subSystemId).getFirst();
             supportAccessRepository.delete(supportAccess);
         } else throw new InvalidOperationException("دسترسی یافت نشد.");
@@ -46,8 +46,8 @@ public class SupportAccessService {
         return supportAccessRepository.getSupportAccessBySubSystem_Id(subSystemId);
     }
     public Boolean hasAccess(Long userId, Long subSystemId) {
-        User user = userService.getById(userId).get();
-        SubSystem subSystem= subSystemService.getById(subSystemId).get();
+        User user = userService.getEntityById(userId);
+        SubSystem subSystem= subSystemService.getEntityById(subSystemId);
         return supportAccessRepository.existsByUserAndSubSystem(user, subSystem);
 
     }
