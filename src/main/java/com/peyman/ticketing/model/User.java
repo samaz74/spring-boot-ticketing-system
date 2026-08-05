@@ -10,6 +10,7 @@ import com.peyman.ticketing.model.enums.Roles;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -36,7 +37,7 @@ public class User {
     @Column(unique=true)
     private String phone;
     @CreationTimestamp
-    private LocalDate createDate;
+    private LocalDateTime createDate;
     @Enumerated(EnumType.STRING)
     private Roles role;
 

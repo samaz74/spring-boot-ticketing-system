@@ -1,5 +1,6 @@
 package com.peyman.ticketing.dto;
 
+import com.peyman.ticketing.service.TicketingSystemService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubSystemRequest {
+
     @NotBlank(message = "نام نمی تواند خالی باشد.")
     private String name;
     private String description;
