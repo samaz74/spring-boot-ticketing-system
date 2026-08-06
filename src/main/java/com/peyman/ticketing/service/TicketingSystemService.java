@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class TicketingSystemService {
     private final TicketingSystemRepository ticketingSystemRepository;
-    private TicketingSystemService(TicketingSystemRepository ticketingSystemRepository) {
+    public TicketingSystemService(TicketingSystemRepository ticketingSystemRepository) {
         this.ticketingSystemRepository = ticketingSystemRepository;
     }
     public TicketingSystemResponse create(TicketingSystemRequest request) {

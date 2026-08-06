@@ -17,7 +17,7 @@ public class SupportAccessService {
     private final SupportAccessRepository supportAccessRepository;
     private final UserService userService;
     private final SubSystemService subSystemService;
-    private SupportAccessService(SupportAccessRepository supportAccessRepository, UserService userService, SubSystemService subSystemService) {
+    public SupportAccessService(SupportAccessRepository supportAccessRepository, UserService userService, SubSystemService subSystemService) {
         this.supportAccessRepository = supportAccessRepository;
         this.userService = userService;
         this.subSystemService = subSystemService;

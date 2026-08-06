@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class SubSystemService {
     private final SubSystemRepository subSystemRepository;
     private final TicketingSystemService ticketingSystemService;
-    private SubSystemService(SubSystemRepository subSystemRepository, TicketingSystemService ticketingSystemService) {
+    public SubSystemService(SubSystemRepository subSystemRepository, TicketingSystemService ticketingSystemService) {
         this.subSystemRepository = subSystemRepository;
         this.ticketingSystemService = ticketingSystemService;
     }

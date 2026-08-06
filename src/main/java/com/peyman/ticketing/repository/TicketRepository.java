@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.jar.JarFile;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findBySubSystem(SubSystem subSystem);
@@ -37,4 +38,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Collection<? extends Ticket> findBySubSystemAndAssignedTo(SubSystem subSystem, User assignedTo);
 
+    List<Ticket> getTicketByCreatedByUser_Id(Long createdByUserId);
 }

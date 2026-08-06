@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     public UserResponse register(UserRequest user) {
@@ -35,14 +35,17 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("کاربر یافت نشد"));
     }
-    public Optional<UserResponse> getById(Long id){
-        return userRepository.findById(id).map(UserMapper::userResponse);
+    public UserResponse getById(Long id){
+        return userRepository.findById(id).map(UserMapper::userResponse).orElseThrow(()->new ResourceNotFoundException("کاربر یافت نشد"));
     }
     public List<UserResponse> getAll(){
-        return userRepository.findAll().stream().map(UserMapper::userResponse).collect(Collectors.toUnmodifiableList());
+        return userRepository.findAll().stream().map(UserMapper::userResponse).collect(Collectors.toList());
     }
-    public Optional<UserResponse> getByUsername(String username) {
-        return userRepository.findByUsername(username).map(UserMapper::userResponse);
+    public UserResponse getByUsername(String username) {
+        return userRepository.findByUsername(username).map(UserMapper::userResponse).orElseThrow(()->new ResourceNotFoundException("نام کاربری یافت نشد"));
+    }
+    public UserResponse getByEmail(String Email) {
+        return userRepository.findByEmail(Email).map(UserMapper::userResponse).orElseThrow(()->new ResourceNotFoundException("ایمیل کاربری یافت نشد"));
     }
     public void changeRole(Long id, Roles role) {
         User user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("یوزر جستجو شده یافت نشد."));

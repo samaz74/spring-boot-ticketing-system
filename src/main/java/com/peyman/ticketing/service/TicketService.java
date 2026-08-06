@@ -25,7 +25,7 @@ public class TicketService {
     private final SubSystemService subSystemService;
     private final SupportAccessService supportAccessService;
 
-    private TicketService(TicketRepository ticketRepository, UserService userService, SubSystemService subSystemService, SupportAccessService supportAccessService){
+    public TicketService(TicketRepository ticketRepository, UserService userService, SubSystemService subSystemService, SupportAccessService supportAccessService){
         this.ticketRepository = ticketRepository;
         this.userService = userService;
         this.subSystemService = subSystemService;
@@ -50,6 +50,9 @@ public class TicketService {
     }
     public List<TicketResponse> getBySUbSystem(Long id){
         return ticketRepository.getTicketBySubSystem_Id(id).stream().map(TicketMapper::mapTicket).collect(Collectors.toList());
+    }
+    public List<TicketResponse> getByUserId(Long id){
+        return ticketRepository.getTicketByCreatedByUser_Id(id).stream().map(TicketMapper::mapTicket).collect(Collectors.toList());
     }
     public List<TicketResponse> getByAssignedTo(Long supporterID){
         return ticketRepository.getTicketByAssignedTo_Id(supporterID).stream().map(TicketMapper::mapTicket).collect(Collectors.toList());

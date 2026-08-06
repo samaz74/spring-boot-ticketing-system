@@ -21,7 +21,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final TicketRepository ticketRepository;
     private final UserService userService;
-    private MessageService(MessageRepository messageRepository, TicketRepository ticketRepository, UserService userService) {
+    public MessageService(MessageRepository messageRepository, TicketRepository ticketRepository, UserService userService) {
         this.messageRepository = messageRepository;
         this.ticketRepository = ticketRepository;
         this.userService = userService;

@@ -16,7 +16,7 @@ public class AttachmentService {
     private final AttachmentRepository attachmentRepository;
     private final TicketService ticketService;
     private final MessageService messageService;
-    private AttachmentService(AttachmentRepository attachmentRepository, TicketService ticketService, MessageService messageService) {
+    public AttachmentService(AttachmentRepository attachmentRepository, TicketService ticketService, MessageService messageService) {
         this.attachmentRepository = attachmentRepository;
         this.ticketService = ticketService;
         this.messageService = messageService;
