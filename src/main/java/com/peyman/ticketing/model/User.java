@@ -8,9 +8,10 @@ import lombok.Setter;
 import lombok.ToString;
 import com.peyman.ticketing.model.enums.Roles;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

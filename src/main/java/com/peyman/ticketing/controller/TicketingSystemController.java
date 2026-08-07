@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/systems")
 public class TicketingSystemController {
-    private TicketingSystemService ticketingSystemService;
+    private final TicketingSystemService ticketingSystemService;
     public TicketingSystemController(TicketingSystemService ticketingSystemService) {
         this.ticketingSystemService = ticketingSystemService;
     }
