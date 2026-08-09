@@ -32,8 +32,8 @@ public class SubSystemService {
     public SubSystem getEntityById(Long id){
         return subSystemRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("زیرسیستم یافت نشد"));
     }
-    public Optional<SubSystemResponse> getById(Long id){
-        return subSystemRepository.findById(id).map(SubSystemMapper::toResponse);
+    public SubSystemResponse getById(Long id){
+        return subSystemRepository.findById(id).map(SubSystemMapper::toResponse).orElseThrow(()->new ResourceNotFoundException("زیر سیستم یافت نشد."));
     }
     public List<SubSystemResponse> getBySystem(Long systemId){
         TicketingSystem ticketingSystem= ticketingSystemService.getEntityById(systemId);

@@ -6,7 +6,6 @@ import com.peyman.ticketing.exeption.ResourceNotFoundException;
 import com.peyman.ticketing.model.Notification;
 import com.peyman.ticketing.model.enums.NotificationType;
 import com.peyman.ticketing.repository.NotificationRepository;
-import com.peyman.ticketing.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +38,14 @@ public class NotificationService {
         notification.setIsRead(true);
         notificationRepository.save(notification);
     }
+    public void markAsReadAll(Long userId) {
+        List<Notification> notification = notificationRepository.getNotificationByUser_Id(userId).stream().collect(Collectors.toList());
+        for (Notification notification1 : notification) {
+            notification1.setIsRead(true);
+            notificationRepository.save(notification1);
+        }
+    }
+
     public int countUnread(Long userId) {
         return notificationRepository.countNotificationByUser_IdAndIsRead(userId,false);
     }
