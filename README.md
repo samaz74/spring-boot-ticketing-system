@@ -1,26 +1,49 @@
 # Spring Boot Ticketing System
 
-A RESTful ticketing system built with Spring Boot, Spring Data JPA, and MariaDB.
-Features include multi-subsystem support, role-based access, ticket assignment, messaging, notifications, and file attachments.
+A RESTful ticketing system built with Spring Boot, Spring Data JPA, Spring Security, and MariaDB.
+Features include JWT authentication, token blacklisting, multi-subsystem support, role-based access, ticket assignment, messaging, notifications, and file attachments.
 
 ## Technologies
 - Java 21
 - Spring Boot 4.1.0
 - Spring Data JPA
+- Spring Security + JWT
 - MariaDB
 - Lombok
 - Maven
 
 ## Project Structure
 The project follows a layered architecture:
-- **Model** — Entities: User, Ticket, SubSystem, TicketingSystem, Message, Notification, Attachment, SupportAccess
+- **Model** — Entities: User, Ticket, SubSystem, TicketingSystem, Message, Notification, Attachment, SupportAccess, InvalidatedToken
 - **Repository** — Spring Data JPA repositories
 - **Service** — Business logic
 - **Controller** — REST API endpoints
 - **DTO** — Request/Response objects
+- **Security** — JWT Filter, UserDetails, SecurityConfig
 - **Exception** — Global exception handling
 
-## API Endpoints
+## Security
+JWT-based authentication with token blacklisting support.
+- Tokens expire after 20 minutes
+- Logged out tokens are blacklisted and cannot be reused
+- Expired tokens are automatically cleaned up
+
+### How to use
+Add token to every request header:
+
+```
+Authorization: Bearer <token>
+```
+
+
+### API Endpoints
+
+### Auth `/api/auth`
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login and get JWT token |
+| POST | `/api/auth/logout` | Logout and invalidate token |
 
 ### Users `/api/users`
 | Method | Path | Description |
@@ -60,6 +83,14 @@ The project follows a layered architecture:
 | GET | `/api/subsystems/{id}` | Get subsystem by ID |
 | GET | `/api/subsystems/systems/{systemId}` | Get subsystems by system |
 | PATCH | `/api/subsystems/{id}/toggle` | Toggle subsystem status |
+
+### Support Access `/api/access`
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/access/{userId}/{subSystemId}` | Grant access to supporter |
+| GET | `/api/access/user/{userId}` | Get accesses by user |
+| GET | `/api/access/subsystem/{subSystemId}` | Get supporters by subsystem |
+| DELETE | `/api/access/{userId}/subsystem/{subSystemId}` | Revoke access |
 
 ### Messages `/api/messages`
 | Method | Path | Description |
@@ -107,9 +138,18 @@ spring.datasource.url=jdbc:mariadb://localhost/ticketing
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
+jwt.secret=yourSecretKey
+jwt.expiration=1200000
 ```
 
 4. Run the project
 ```bash
 mvn spring-boot:run
 ```
+
+## Roles
+| Role | Access |
+|------|--------|
+| ADMIN | Full access |
+| SUPPORT | Assigned tickets and subsystems |
+| USER | Own tickets only |
