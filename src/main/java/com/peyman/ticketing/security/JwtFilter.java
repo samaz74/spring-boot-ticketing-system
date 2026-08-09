@@ -1,5 +1,6 @@
 package com.peyman.ticketing.security;
 
+import com.peyman.ticketing.repository.InvalidatedTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,14 +16,16 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
+    private final InvalidatedTokenRepository invalidatedTokenRepository;
     private final UserDetailsService userDetailsService;
-    public JwtFilter (JwtUtil jwtUtil , UserDetailsService userDetailsService){
+    public JwtFilter (JwtUtil jwtUtil , UserDetailsService userDetailsService, InvalidatedTokenRepository invalidatedTokenRepository){
         this.jwtUtil = jwtUtil;
+        this.invalidatedTokenRepository = invalidatedTokenRepository;
         this.userDetailsService = userDetailsService;
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer ")){
+        if (request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer ")|| invalidatedTokenRepository.existsByToken(request.getHeader("Authorization").substring(7)) ){
             filterChain.doFilter(request, response);
             return;
         } else if (jwtUtil.isTokenValid(request.getHeader("Authorization").substring(7))) {

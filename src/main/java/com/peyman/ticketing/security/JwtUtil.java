@@ -1,6 +1,7 @@
 package com.peyman.ticketing.security;
 
 import com.peyman.ticketing.model.User;
+import com.peyman.ticketing.repository.InvalidatedTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.antlr.v4.runtime.Token;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -16,7 +19,7 @@ public class JwtUtil{
     @Value("${jwt.secret}")
     private String seckretKey;
 
-    @Value("jwt.expiration")
+    @Value("${jwt.expiration}")
     private Long expiration;
 
     private SecretKey getSigningKey(){
@@ -37,4 +40,9 @@ public class JwtUtil{
             return false;
         }
     }
+    public LocalDateTime extractExpiration(String token){
+        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload().getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+    }
+
 }
