@@ -3,6 +3,7 @@ package com.peyman.ticketing.controller;
 import com.peyman.ticketing.dto.SubSystemRequest;
 import com.peyman.ticketing.dto.SubSystemResponse;
 import com.peyman.ticketing.service.SubSystemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class SubSystemController {
     }
 
     @PostMapping("/{systemId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public SubSystemResponse createSubSystem(@PathVariable("systemId") Long systemId, @RequestBody SubSystemRequest subSystem) {
         return subSystemService.create(subSystem,systemId);
     }
@@ -28,6 +30,7 @@ public class SubSystemController {
         return subSystemService.getBySystem(systemId);
     }
     @PatchMapping("/toggle/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void toggleSubSystem(@PathVariable("id") Long id) {
         subSystemService.toggleActive(id);
     }

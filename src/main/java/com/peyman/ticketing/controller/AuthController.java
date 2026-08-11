@@ -4,6 +4,7 @@ import com.peyman.ticketing.dto.AuthResponse;
 import com.peyman.ticketing.dto.LoginRequest;
 import com.peyman.ticketing.dto.UserRequest;
 import com.peyman.ticketing.service.AuthService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,7 @@ public class AuthController {
         this.authService = authService;
     }
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public AuthResponse register(@RequestBody UserRequest userRequest){
         return authService.registerUser(userRequest);
     }

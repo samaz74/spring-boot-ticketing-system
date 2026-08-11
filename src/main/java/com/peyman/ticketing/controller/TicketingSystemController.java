@@ -4,6 +4,7 @@ import com.peyman.ticketing.dto.TicketingSystemRequest;
 import com.peyman.ticketing.dto.TicketingSystemResponse;
 import com.peyman.ticketing.service.TicketingSystemService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class TicketingSystemController {
         this.ticketingSystemService = ticketingSystemService;
     }
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public TicketingSystemResponse createTicketingSystem(@Valid @RequestBody TicketingSystemRequest ticketingSystemRequest) {
         return ticketingSystemService.create(ticketingSystemRequest);
     }
@@ -29,6 +31,7 @@ public class TicketingSystemController {
         return ticketingSystemService.getById(id);
     }
     @PatchMapping("/{id}/toggle")
+    @PreAuthorize("hasRole('ADMIN')")
     public void patchSystemStatus(@PathVariable Long id) {
         ticketingSystemService.toggleActive(id);
     }

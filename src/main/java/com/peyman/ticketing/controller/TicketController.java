@@ -6,6 +6,7 @@ import com.peyman.ticketing.model.Ticket;
 import com.peyman.ticketing.model.enums.TicketStatus;
 import com.peyman.ticketing.service.TicketService;
 import com.peyman.ticketing.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,14 +40,17 @@ public class TicketController {
         return ticketService.getByAssignedTo(userId);
     }
     @GetMapping("/visible/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPORT')")
     public List<TicketResponse> getTicketByVisible(@PathVariable Long userId) {
         return ticketService.getVisibleTickets(userId);
     }
     @PatchMapping("/{ticketId}/assign/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPORT')")
     public void assignTicket(@PathVariable Long userId,@PathVariable Long ticketId) {
-        ticketService.assignTicket(ticketId,userId);
+        ticketService.assignTicket(userId,ticketId);
     }
     @PatchMapping("/{ticketId}/status")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPORT')")
     public void changeTicketStatus(@PathVariable Long ticketId, @RequestParam TicketStatus status) {
         ticketService.changeStatus(ticketId,status);
     }

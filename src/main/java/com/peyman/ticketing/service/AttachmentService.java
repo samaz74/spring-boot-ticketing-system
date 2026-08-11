@@ -1,5 +1,7 @@
 package com.peyman.ticketing.service;
 
+import com.peyman.ticketing.dto.AttachmentResponse;
+import com.peyman.ticketing.dto.mapper.AttachmentMapper;
 import com.peyman.ticketing.model.Attachment;
 import com.peyman.ticketing.repository.AttachmentRepository;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AttachmentService {
@@ -49,11 +52,11 @@ public class AttachmentService {
         Files.copy(file.getInputStream(), Path.of("uploads/" + storedName));
         attachmentRepository.save(attachment);
     }
-    public List<Attachment> getAttachmentsByTicket(Long ticketId) {
-        return attachmentRepository.getAttachmentByTicket_Id(ticketId);
+    public List<AttachmentResponse> getAttachmentsByTicket(Long ticketId) {
+        return attachmentRepository.getAttachmentByTicket_Id(ticketId).stream().map(AttachmentMapper::toDto).collect(Collectors.toList());
     }
-    public List<Attachment> getAttachmentsByMessageId(Long messageId) {
-        return attachmentRepository.getAttachmentByMessage_Id(messageId);
+    public List<AttachmentResponse> getAttachmentsByMessageId(Long messageId) {
+        return attachmentRepository.getAttachmentByMessage_Id(messageId).stream().map(AttachmentMapper::toDto).collect(Collectors.toList());
     }
     public void deleteAttachmentById(Long attachmentId) {
         attachmentRepository.deleteById(attachmentId);
