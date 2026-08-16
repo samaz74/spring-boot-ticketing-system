@@ -1,5 +1,7 @@
-package com.peyman.ticketing.security;
+package com.peyman.ticketing.config;
 
+import com.peyman.ticketing.security.JwtFilter;
+import com.peyman.ticketing.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -18,9 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
-    public SecurityConfig(JwtFilter jwtFilter,UserDetailsServiceImpl userDetailsServiceImpl){
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    public SecurityConfig(JwtFilter jwtFilter,UserDetailsServiceImpl userDetailsServiceImpl,AuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtFilter=jwtFilter;
         this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.authenticationEntryPoint=authenticationEntryPoint;
     }
 
     @Bean
@@ -44,6 +49,7 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling(ex ->ex.authenticationEntryPoint(authenticationEntryPoint));
         return http.build();
     }
 
